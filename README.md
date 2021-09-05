@@ -18,6 +18,7 @@ Usage: demographics.py [OPTIONS]
 Options:
   -p, --population INTEGER  Population to draw from (default 1,000,000)
   --expected_pop            Don't randomize the total number of Ascendants.
+  -a, --ascendants INTEGER  Generate a fixed number of Ascendants.
   --seed TEXT               Override the RNG seed.
   --help                    Show this message and exit.
 
@@ -35,6 +36,17 @@ PL     Count
 Total  96
 
 Seed   133322
+
+$ ./demographics.py -a10
+Generating exactly 10 Ascendants.
+
+PL     Count
+15     6
+16     3
+18     1
+Total  10
+
+Seed   115237
 ```
 
 #### Requirements

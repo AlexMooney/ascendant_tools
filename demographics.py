@@ -41,7 +41,7 @@ def generate_pl():
     "--ascendants",
     default=None,
     type=int,
-    help="Genrate a number of Ascendants instead of a population.",
+    help="Generate a fixed number of Ascendants.",
 )
 @click.option("--seed", default=None, help="Override the RNG seed.")
 def generate(population, expected_pop, ascendants, seed):
