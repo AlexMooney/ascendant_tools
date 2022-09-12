@@ -5,6 +5,7 @@ from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
 
 from ascendant_roller import AscendantRoller
+from amalgam_roller import AmalgamRoller
 
 PUBLIC_KEY = "PUBLIC_KEY_HERE"
 PING_PONG = {"type": 1}
@@ -31,20 +32,6 @@ def ping_pong(body):
         return True
     return False
 
-def check_name(body, name):
-    if body.get("type") == 2 and body.get("data", {}).get("name") == name:
-        return True
-    return False
-
-def attack(body):
-    return check_name(body, 'attack')
-
-def chart(body):
-    return check_name(body, 'chart')
-
-def init(body):
-    return check_name(body, 'init')
-
 def _get_int_argument(body):
     return int(body['data']['options'][0]['value'])
 
@@ -59,15 +46,25 @@ def lambda_handler(event, context):
         return PING_PONG
 
     content = "Failed to figure out what you asked!  Please report bug to @malex."
-    if attack(body):
+    name = body.get("data", {}).get("name")
+
+    if body.get("type") != 2:
+        pass
+    elif name == "attack":
         rv = _get_int_argument(body)
         content = AscendantRoller().roll_attack(rv)
-    elif chart(body):
+    elif name == "chart":
         rv = _get_int_argument(body)
         content = AscendantRoller().roll_chart(rv)
-    elif init(body):
+    elif name == "init":
         initiative = _get_int_argument(body)
         content = f"Initiative roll with {initiative}.  Result: {initiative + randint(1, 10)}"
+    elif name == "opposed":
+        rv = _get_int_argument(body)
+        content = AmalgamRoller().roll_opposed(rv)
+    elif name == "check":
+        rv = _get_int_argument(body)
+        content = AmalgamRoller().roll_check(rv)
 
     return {
             "type": RESPONSE_TYPES['MESSAGE_WITH_SOURCE'],
