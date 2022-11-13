@@ -7,18 +7,29 @@ class CensusNames
   attr_reader :count_by_surname, :surname_row_by_surname
 
   def initialize
-    @surname_rows = CSV.read('data/surnames01.csv', headers: true)
-    @surname_row_by_surname = @surname_rows.each_with_object({}) do |surname_row, result|
+    surname_rows = CSV.read('data/surnames_01.csv', headers: true)
+    @surname_row_by_surname = surname_rows.each_with_object({}) do |surname_row, result|
       result[surname_row['Name']] = clean_row!(surname_row)
     end
     @count_by_surname = @surname_row_by_surname.transform_values { |row| row['Count'] }
+
+    male_name_rows = CSV.read('data/male_names_01.csv', headers: true)
+    @count_by_male_name = male_name_rows.each_with_object({}) do |male_name_row, result|
+      result[male_name_row['Name']] = male_name_row['Count'].gsub(',', '').to_i
+    end
+
+    female_name_rows = CSV.read('data/female_names_01.csv', headers: true)
+    @count_by_female_name = female_name_rows.each_with_object({}) do |female_name_row, result|
+      result[female_name_row['Name']] = female_name_row['Count'].gsub(',', '').to_i
+    end
   end
 
   def random_person
+    firstname = picker([@count_by_male_name, @count_by_female_name].sample)
     surname = random_surname
     surname_row = surname_row_by_surname[surname]
     ethnicity = random_ethnicity(surname_row)
-    "#{surname} #{ethnicity}"
+    "#{firstname} #{surname}, #{ethnicity}"
   end
 
   def random_surname
