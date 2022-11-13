@@ -75,4 +75,5 @@ class CensusNames
   end
 end
 
-puts CensusNames.new.random_person
+census_names = CensusNames.new
+10.times { puts census_names.random_person }
