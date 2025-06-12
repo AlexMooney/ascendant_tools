@@ -10,11 +10,14 @@ import click
 
 # From the sum of the populations in the Ascendant RPG book.
 ASCENDANT_FRACTION = 8.81e-05
-
-# Magic numbers to get to the distribution to match the book.
-LAMBDA = 0.8047189572  # https://en.wikipedia.org/wiki/Inverse_transform_sampling
 MINIMUM_PL = 15
 
+# See https://en.wikipedia.org/wiki/Inverse_transform_sampling
+# Population reduces by a factor of 5 each increase of 2 PLs.
+LAMBDA = log(5.0) / 2.0
+
+# Small populations are checked for each individual; larger populations
+# are approximated using the normal approximation of the binomial distribution.
 # https://en.wikipedia.org/wiki/Binomial_distribution#Normal_approximation
 BINOMIAL_APPROXIMATION = 9 * (1 - ASCENDANT_FRACTION) / ASCENDANT_FRACTION
 
