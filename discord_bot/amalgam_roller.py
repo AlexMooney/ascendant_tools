@@ -50,11 +50,11 @@ class AmalgamRoller:
     }
 
     color_strings = [
-        ":red_square: " * 8,
-        ":orange_square: " * 4,
-        ":yellow_square: " * 2,
-        ":green_square:",
-        ":white_large_square:",
+        ":red_circle: " * 8,
+        ":orange_circle: " * 4,
+        ":yellow_circle: " * 2,
+        ":green_circle:",
+        ":white_circle:"
     ]
 
     def roll_opposed(self, rv):
